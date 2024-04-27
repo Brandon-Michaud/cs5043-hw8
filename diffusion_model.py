@@ -56,7 +56,7 @@ def create_diffusion_model(image_size,
     # Scale time and label inputs for skip connections
     time_and_label_skips = []
     for i in range(len(filters)):
-        time_and_label_skip = AveragePooling2D(pool_size=(2 ** i, 2 ** i), stride=(2 ** i, 2 ** i))(time_and_labels)
+        time_and_label_skip = AveragePooling2D(pool_size=(2 ** i, 2 ** i), strides=(2 ** i, 2 ** i))(time_and_labels)
         time_and_label_skips.append(time_and_label_skip)
 
     # Down convolutions in Unet
