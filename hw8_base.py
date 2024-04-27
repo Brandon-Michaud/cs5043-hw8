@@ -134,7 +134,7 @@ def execute_exp(args=None, multi_gpus=False):
     if args.verbose >= 3:
         print('Starting data flow')
 
-    beta, alpha, _ = compute_beta_alpha(args.nsteps, args.beta_start, args.beta_end)
+    beta, alpha, _ = compute_beta_alpha(args.n_steps, args.beta_start, args.beta_end)
 
     if not args.no_data:
         ds_train, ds_valid = create_diffusion_dataset(base_dir=args.dataset,
@@ -148,7 +148,7 @@ def execute_exp(args=None, multi_gpus=False):
                                                       num_parallel_calls=args.num_parallel_calls,
                                                       alpha=alpha)
     else:
-        ds_train, ds_valid= None, None
+        ds_train, ds_valid = None, None
 
     # Build the model
     if args.verbose >= 3:
@@ -161,11 +161,37 @@ def execute_exp(args=None, multi_gpus=False):
 
         with mirrored_strategy.scope():
             # Build network: you must provide your own implementation
-            model = None
+            model = create_diffusion_model(image_size=(args.image_size, args.image_size),
+                                           n_channels=args.n_channels,
+                                           n_classes=args.n_classes,
+                                           n_steps=args.n_steps,
+                                           n_emebedding=args.n_embedding,
+                                           filters=args.filters,
+                                           n_conv_per_step=args.n_conv_per_step,
+                                           conv_activation=args.conv_activation,
+                                           kernel_size=args.kernel_size,
+                                           padding=args.padding,
+                                           sdropout=args.sdropout,
+                                           batch_normalization=args.batch_normalization)
     else:
         # Single GPU
         # Build network: you must provide your own implementation
-        model = None
+        model = create_diffusion_model(image_size=(args.image_size, args.image_size),
+                                       n_channels=args.n_channels,
+                                       n_classes=args.n_classes,
+                                       n_steps=args.n_steps,
+                                       n_emebedding=args.n_embedding,
+                                       filters=args.filters,
+                                       n_conv_per_step=args.n_conv_per_step,
+                                       conv_activation=args.conv_activation,
+                                       kernel_size=args.kernel_size,
+                                       padding=args.padding,
+                                       sdropout=args.sdropout,
+                                       batch_normalization=args.batch_normalization)
+
+    # Compile the model
+    opt = tf.keras.optimizers.Adam(learning_rate=args.lrate, amsgrad=False)
+    model.compile(loss=tf.keras.losses.MeanSquaredError(), optimizer=opt, metrics=None)
 
     # Report model structure if verbosity is turned on
     if args.verbose >= 1 and model is not None:

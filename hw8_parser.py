@@ -39,16 +39,18 @@ def create_parser():
     parser.add_argument('--dataset', type=str, default='', help='Data set directory')
     parser.add_argument('--fold', type=int, default=0, help='Fold of dataset to load')
     parser.add_argument('--image_size', type=int, default=64, help='Size of image')
+    parser.add_argument('--n_channels', type=int, default=3, help='Number of channels in images')
+    parser.add_argument('--n_classes', type=int, default=7, help='Number of output classes')
     parser.add_argument('--results_path', type=str, default='./results', help='Results directory')
 
     # Specific experiment configuration
     parser.add_argument('--epochs', type=int, default=100, help='Training epochs')
     parser.add_argument('--lrate', type=float, default=0.001, help="Learning rate")
-    parser.add_argument('--n_embedding', type=int, default=16, help='Size of embeddings')
+    parser.add_argument('--n_embedding', type=int, default=30, help='Size of embeddings')
     parser.add_argument('--grad_clip', type=float, default=None, help='Threshold for gradient clipping')
 
     # Noise schedule
-    parser.add_argument('--nsteps', type=int, default=50, help='Number of noising time steps')
+    parser.add_argument('--n_steps', type=int, default=50, help='Number of noising time steps')
     parser.add_argument('--beta_start', type=float, default=0.0001, help='Beginning value for beta')
     parser.add_argument('--beta_end', type=float, default=0.2, help='Ending value for beta')
 
@@ -61,10 +63,6 @@ def create_parser():
     parser.add_argument('--kernel_size', type=int, default=3, help='Size of kernel')
     parser.add_argument('--padding', type=str, default='valid', help='Type of padding to use')
     parser.add_argument('--sdropout', type=float, default=None, help='Probability of spatial dropout')
-    parser.add_argument('--dense', nargs='+', type=int, default=[10, 5],
-                        help='Number of neurons per dense layer')
-    parser.add_argument('--dense_activation', type=str, default='elu', help='Dense activation')
-    parser.add_argument('--dropout', type=float, default=None, help='Probability of dropout')
     parser.add_argument('--batch_normalization', action='store_true', help='Turn on batch normalization')
 
     # Regularization parameters
