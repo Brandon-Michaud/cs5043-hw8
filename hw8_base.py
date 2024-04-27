@@ -218,7 +218,7 @@ def execute_exp(args=None, multi_gpus=False):
 
     #####
     # Start wandb
-    run = wandb.init(project=args.project, name='%s_R%d' % (args.label, args.rotation), notes=fbase, config=vars(args))
+    run = wandb.init(project=args.project, name=f'{args.exp_type}', notes=fbase, config=vars(args))
 
     # Log hostname
     wandb.log({'hostname': socket.gethostname()})
