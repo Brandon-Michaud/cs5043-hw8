@@ -14,10 +14,10 @@ def create_parser():
     Create argument parser
     '''
     # Parse the command-line arguments
-    parser = argparse.ArgumentParser(description='HW7', fromfile_prefix_chars='@')
+    parser = argparse.ArgumentParser(description='HW8', fromfile_prefix_chars='@')
 
     # High-level info for WandB
-    parser.add_argument('--project', type=str, default='hw6', help='WandB project name')
+    parser.add_argument('--project', type=str, default='hw8', help='WandB project name')
 
     # High-level commands
     parser.add_argument('--check', action='store_true', help='Check results for completeness')
