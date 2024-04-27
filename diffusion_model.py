@@ -50,8 +50,8 @@ def create_diffusion_model(image_size,
     time_input = tf.tile(time_input, [1, image_size[0], image_size[1], 1])
 
     # Concatenate inputs
-    time_and_labels = Concatenate()([label_input, time_input])
-    tensor = Concatenate()([time_and_labels, image_input])
+    time_and_labels = Concatenate()([label_input, time_input], axis=3)
+    tensor = Concatenate()([time_and_labels, image_input], axis=3)
 
     # Scale time and label inputs for skip connections
     time_and_label_skips = []
