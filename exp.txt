@@ -1,0 +1,8 @@
+--project=hw8
+--dataset=/home/fagg/datasets/radiant_earth/pa
+--fold=0
+--image_size=64
+--epochs=10
+--save_model
+--nogo
+--no_data

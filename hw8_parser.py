@@ -42,52 +42,30 @@ def create_parser():
     parser.add_argument('--results_path', type=str, default='./results', help='Results directory')
 
     # Specific experiment configuration
-    parser.add_argument('--exp_index', type=int, default=None, help='Experiment index')
-    parser.add_argument('--n_noise_steps', type=int, default=3, help='Number of noise steps')
-    parser.add_argument('--nepochs_meta', type=int, default=10, help='Number of meta epochs')
-    parser.add_argument('--nepochs_d', type=int, default=10, help='Number of discriminator epochs per meta epoch')
-    parser.add_argument('--nepochs_g', type=int, default=1, help='Number of generator epochs per meta epoch')
+    parser.add_argument('--epochs', type=int, default=100, help='Training epochs')
+    parser.add_argument('--lrate', type=float, default=0.001, help="Learning rate")
+    parser.add_argument('--n_embedding', type=int, default=16, help='Size of embeddings')
+    parser.add_argument('--grad_clip', type=float, default=None, help='Threshold for gradient clipping')
+
+    # Noise schedule
+    parser.add_argument('--nsteps', type=int, default=50, help='Number of noising time steps')
+    parser.add_argument('--beta_start', type=float, default=0.0001, help='Beginning value for beta')
+    parser.add_argument('--beta_end', type=float, default=0.2, help='Ending value for beta')
 
     # Discriminator configuration
-    parser.add_argument('--d_n_conv_per_step', type=int, default=2,
-                        help='Number of convolutions per each convolution stack in discriminator')
-    parser.add_argument('--d_filters', nargs='+', type=int, default=[64],
-                        help='Number of filters for each convolution stack in discriminator')
-    parser.add_argument('--d_conv_activation', type=str, default='elu',
-                        help='Convolutional activation for discriminator')
-    parser.add_argument('--d_kernel_size', type=int, default=3, help='Size of kernel for discriminator')
-    parser.add_argument('--d_padding', type=str, default='valid', help='Type of padding to use for discriminator')
-    parser.add_argument('--d_sdropout', type=float, default=None,
-                        help='Probability of spatial dropout in discriminator')
-    parser.add_argument('--d_hidden', nargs='+', type=int, default=[10, 5],
-                        help='Number of neurons per dense layer in discriminator')
-    parser.add_argument('--d_dense_activation', type=str, default='elu', help='Dense activation for discriminator')
-    parser.add_argument('--d_dropout', type=float, default=None, help='Probability of dropout in discriminator')
-    parser.add_argument('--d_batch_normalization', action='store_true',
-                        help='Turn on batch normalization for discriminator')
-    parser.add_argument('--d_lrate', type=float, default=0.001, help="Discriminator learning rate")
-    parser.add_argument('--d_grad_clip', type=float, default=None,
-                        help='Threshold for gradient clipping in discriminator')
-
-    # Generator configuration
-    parser.add_argument('--g_n_conv_per_step', type=int, default=2,
-                        help='Number of convolutions per each convolution stack in generator')
-    parser.add_argument('--g_n_noise_steps', type=int, default=3, help='Number of noise steps in generator')
-    parser.add_argument('--g_filters', nargs='+', type=int, default=[64],
-                        help='Number of filters for each convolution stack in generator')
-    parser.add_argument('--g_conv_activation', type=str, default='elu',
-                        help='Convolutional activation for generator')
-    parser.add_argument('--g_kernel_size', type=int, default=3, help='Size of kernel for generator')
-    parser.add_argument('--g_padding', type=str, default='valid', help='Type of padding to use for generator')
-    parser.add_argument('--g_sdropout', type=float, default=None,
-                        help='Probability of spatial dropout in generator')
-    parser.add_argument('--g_batch_normalization', action='store_true',
-                        help='Turn on batch normalization for generator')
-
-    # Meta model configuration
-    parser.add_argument('--m_lrate', type=float, default=0.001, help="Generator learning rate")
-    parser.add_argument('--m_grad_clip', type=float, default=None,
-                        help='Threshold for gradient clipping in generator')
+    parser.add_argument('--n_conv_per_step', type=int, default=2,
+                        help='Number of convolutions per each convolution stack')
+    parser.add_argument('--filters', nargs='+', type=int, default=[64],
+                        help='Number of filters for each convolution stack')
+    parser.add_argument('--conv_activation', type=str, default='elu', help='Convolutional activation')
+    parser.add_argument('--kernel_size', type=int, default=3, help='Size of kernel')
+    parser.add_argument('--padding', type=str, default='valid', help='Type of padding to use')
+    parser.add_argument('--sdropout', type=float, default=None, help='Probability of spatial dropout')
+    parser.add_argument('--dense', nargs='+', type=int, default=[10, 5],
+                        help='Number of neurons per dense layer')
+    parser.add_argument('--dense_activation', type=str, default='elu', help='Dense activation')
+    parser.add_argument('--dropout', type=float, default=None, help='Probability of dropout')
+    parser.add_argument('--batch_normalization', action='store_true', help='Turn on batch normalization')
 
     # Regularization parameters
     parser.add_argument('--L1_regularization', '--l1', type=float, default=None, help="L1 regularization parameter")
