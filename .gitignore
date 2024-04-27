@@ -1,0 +1,8 @@
+outputs
+results
+figures
+.idea
+.DS_Store
+__pycache__
+*.png
+*.pdf
