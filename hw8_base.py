@@ -247,7 +247,7 @@ def execute_exp(args=None, multi_gpus=False):
                         use_multiprocessing=True,
                         verbose=args.verbose >= 2,
                         validation_data=ds_valid,
-                        validation_steps=None,
+                        validation_steps=args.steps_per_epoch,
                         callbacks=cbs)
 
     # # Generate results data
