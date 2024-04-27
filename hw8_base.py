@@ -32,11 +32,6 @@ at the beginning of a run.
 for each training epoch
 
 '''
-
-import sys
-import argparse
-import pickle
-import pandas as pd
 import wandb
 import socket
 import tensorflow as tf
@@ -46,7 +41,6 @@ from tensorflow import keras
 
 # Provided
 from chesapeake_loader import *
-from diffusion_tools import *
 from hw8_parser import *
 
 # You need to provide this yourself

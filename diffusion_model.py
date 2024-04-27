@@ -39,6 +39,7 @@ def create_diffusion_model(image_size,
 
     # Input for time step
     time_input = Input(shape=(1,), name='time_input', dtype=tf.int32)
+    inputs = [label_input, image_input, time_input]
 
     # Use positional encoding for time step
     time_input = PositionEncoder(max_steps=n_steps, max_dims=n_emebedding)(time_input)
@@ -50,8 +51,7 @@ def create_diffusion_model(image_size,
 
     # Concatenate inputs
     time_and_labels = Concatenate()([label_input, time_input])
-    inputs = Concatenate()([time_and_labels, image_input])
-    tensor = inputs
+    tensor = Concatenate()([time_and_labels, image_input])
 
     # Scale time and label inputs for skip connections
     time_and_label_skips = []
