@@ -9,4 +9,3 @@
 --epochs=100
 --save_model
 --render
---nogo
