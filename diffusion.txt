@@ -1,8 +1,8 @@
 --n_conv_per_step=3
 --filters
-16
-32
 64
+128
+256
 --conv_activation=elu
 --kernel_size=3
 --padding=same
