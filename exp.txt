@@ -6,7 +6,7 @@
 --n_channels=3
 --n_classes=7
 --n_embedding=30
---epochs=10
+--epochs=100
 --save_model
 --render
 --nogo
