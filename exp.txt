@@ -9,4 +9,3 @@
 --save_model
 --render
 --nogo
---no_data

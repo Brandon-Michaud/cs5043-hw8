@@ -41,7 +41,7 @@ def create_diffusion_model(image_size,
     time_input = Input(shape=(1,), name='time_input', dtype=tf.int32)
 
     # Use positional encoding for time step
-    # time_input = PositionEncoder(max_steps=n_steps, max_dims=n_emebedding)(time_input)
+    time_input = PositionEncoder(max_steps=n_steps, max_dims=n_emebedding)(time_input)
 
     # Broadcast scalar time step to match image size
     time_input = tf.expand_dims(time_input, axis=1)
