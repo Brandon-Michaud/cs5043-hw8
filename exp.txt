@@ -1,4 +1,5 @@
 --project=hw8
+--label=v2
 --exp_type=diffusion
 --dataset=/home/fagg/datasets/radiant_earth/pa
 --fold=0

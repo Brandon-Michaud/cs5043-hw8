@@ -101,7 +101,7 @@ def generate_fname(args):
     #             f'lrate_{args.lrate:0.6f}_rot_{args.rotation}')
     # else:
     #     assert False
-    return f'{args.results_path}/{args.exp_type}'
+    return f'{args.results_path}/{args.exp_type}{f"_{args.label}" if args.label is not None else ""}'
 
 
 def execute_exp(args=None, multi_gpus=False):
