@@ -12,7 +12,7 @@
 #SBATCH --chdir=/home/cs504319/cs5043-hw8
 
 . /home/fagg/tf_setup.sh
-conda activate tf
+conda activate dnn_2024_02
 
 
 python inference.py -vv @exp.txt @oscer.txt @diffusion.txt @noise.txt --cpus_per_task $SLURM_CPUS_PER_TASK
