@@ -13,7 +13,7 @@
 #SBATCH --chdir=/home/cs504319/cs5043-hw8
 
 . /home/fagg/tf_setup.sh
-conda activate dnn_2024_02
+conda activate tf
 module load cuDNN/8.9.2.26-CUDA-12.2.0
 
 
