@@ -75,9 +75,3 @@ class PositionEncoder(keras.layers.Layer):
 
     def embedding(self):
         return self.positional_embedding
-
-
-class ExpandDims(keras.layers.Layer):
-    def call(self, inputs):
-        return tf.expand_dims(tf.expand_dims(inputs, axis=1), axis=1)
-

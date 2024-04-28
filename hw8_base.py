@@ -40,7 +40,7 @@ from tensorflow.keras.utils import plot_model
 from tensorflow import keras
 
 # Provided
-from chesapeake_loader import *
+from chesapeake_loader2 import *
 from hw8_parser import *
 
 # You need to provide this yourself
@@ -247,7 +247,6 @@ def execute_exp(args=None, multi_gpus=False):
                         use_multiprocessing=True,
                         verbose=args.verbose >= 2,
                         validation_data=ds_valid,
-                        validation_steps=args.steps_per_epoch,
                         callbacks=cbs)
 
     # # Generate results data
