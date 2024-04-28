@@ -29,7 +29,7 @@ if __name__ == '__main__':
                                num_parallel_calls=args.num_parallel_calls)
 
     fname = 'results/diffusion_model'
-    model = keras.saving.load_model(fname)
+    model = keras.models.load_model(fname)
 
     for I, L in ds.take(1):
         print(I.shape, L.shape)
