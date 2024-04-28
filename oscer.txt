@@ -1,4 +1,4 @@
---batch=16
+--batch=128
 --steps_per_epoch=32
 --repeat
 --prefetch=2

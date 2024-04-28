@@ -2,7 +2,7 @@
 --exp_type=diffusion
 --dataset=/home/fagg/datasets/radiant_earth/pa
 --fold=0
---image_size=64
+--image_size=128
 --n_channels=3
 --n_classes=7
 --n_embedding=30
