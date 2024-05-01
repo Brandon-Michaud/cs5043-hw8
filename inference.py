@@ -28,7 +28,7 @@ if __name__ == '__main__':
                                prefetch=args.prefetch,
                                num_parallel_calls=args.num_parallel_calls)
 
-    fname = 'results/diffusion_v3_model'
+    fname = 'results/diffusion_v6_model'
     model = keras.models.load_model(fname)
 
     for I, L in ds.take(1):
