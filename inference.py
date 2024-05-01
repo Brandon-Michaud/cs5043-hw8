@@ -91,37 +91,47 @@ if __name__ == '__main__':
     # Final step
     Zs.append(Z)
 
-    # # Dimensions of grid of de-noised images
-    # cols = 7
-    # rows = args.n_steps // cols + 2
-    #
-    # # De-noise 3 images
-    # for i in range(3):
-    #     # Create grid of images
-    #     fig, axs = plt.subplots(rows, cols)
-    #
-    #     # Show labels and corresponding true image
-    #     cl = np.argmax(L[i, :, :, :], axis=-1)
-    #     axs[0, 0].imshow(cl, vmax=6, vmin=0)
-    #     axs[0, 1].imshow(I[i, :, :, :])
-    #
-    #     # Remove ticks on every subplot
-    #     for j in range(cols):
-    #         for k in range(rows):
-    #             axs[k, j].set_xticks([])
-    #             axs[k, j].set_yticks([])
-    #
-    #     # Show de-noising steps
-    #     for j, Z in enumerate(Zs):
-    #         axs[j // cols + 1, j % cols].imshow(convert_image(Z[i, :, :, :]))
-    #
-    #     # Save figure
-    #     fig.savefig(f'figures/steps_{i}.png')
+    # Dimensions of grid of de-noised images
+    cols = 7
+    rows = args.n_steps // cols + 2
+
+    # De-noise 3 images
+    for i in range(3):
+        # Create grid of images
+        fig, axs = plt.subplots(rows, cols)
+
+        # Show labels and corresponding true image
+        cl = np.argmax(L[i, :, :, :], axis=-1)
+        axs[0, 0].imshow(cl, vmax=6, vmin=0)
+        axs[0, 1].imshow(I[i, :, :, :])
+
+        # Remove ticks on every subplot
+        for j in range(cols):
+            for k in range(rows):
+                axs[k, j].set_xticks([])
+                axs[k, j].set_yticks([])
+
+        # Show de-noising steps
+        for j, Z in enumerate(Zs):
+            axs[j // cols + 1, j % cols].imshow(convert_image(Z[i, :, :, :]))
+
+        # Save figure
+        fig.savefig(f'figures/steps_{i}.png')
+
+    # Create gallery of de-noised of images
+    rows = 5
+    cols = 5
+    fig, axs = plt.subplots(rows, cols)
+
+    # Get only de-noised images
+    final_Z = Zs[len(Zs) - 1]
 
     # Show gallery of final images
-    final_Z = Zs[len(Zs) - 1]
-    print(final_Z.shape)
-    # rows = 5
-    # cols = 5
-    # for i in range(rows * cols):
+    for i in range(rows * cols):
+        # Show de-noised image
+        axs[i // cols, i % cols].imshow(convert_image(final_Z[i, :, :, :]))
+
+    # Save figure
+    fig.savefig(f'figures/gallery.png')
+
 
