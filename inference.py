@@ -90,21 +90,24 @@ if __name__ == '__main__':
     # Final step
     Zs.append(Z)
 
-    i = 1
     cols = 7
-    fig, axs = plt.subplots(args.n_steps // cols + 2, cols)
+    rows = args.n_steps // cols + 2
 
-    cl = np.argmax(L[i, :, :, :], axis=-1)
-    axs[0, 0].imshow(cl, vmax=6, vmin=0)
-    axs[0, 1].imshow(I[i, :, :, :])
+    for i in range(3):
+        fig, axs = plt.subplots(rows, cols)
 
-    for j in range(cols):
-        axs[0, j].set_xticks([])
-        axs[0, j].set_yticks([])
+        cl = np.argmax(L[i, :, :, :], axis=-1)
+        axs[0, 0].imshow(cl, vmax=6, vmin=0)
+        axs[0, 1].imshow(I[i, :, :, :])
 
-    for j, Z in enumerate(Zs):
-        axs[j // cols + 1, j % cols].imshow(convert_image(Z[i, :, :, :]))
-        axs[j // cols + 1, j % cols].set_xticks([])
-        axs[j // cols + 1, j % cols].set_yticks([])
+        for j in range(cols):
+            for k in range(rows):
+                axs[0, j].set_xticks([])
+                axs[0, j].set_yticks([])
 
-    fig.savefig('figures/test.png')
+        for j, Z in enumerate(Zs):
+            axs[j // cols + 1, j % cols].imshow(convert_image(Z[i, :, :, :]))
+            axs[j // cols + 1, j % cols].set_xticks([])
+            axs[j // cols + 1, j % cols].set_yticks([])
+
+        fig.savefig(f'figures/steps_{i}.png')
