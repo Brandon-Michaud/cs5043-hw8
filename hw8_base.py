@@ -40,7 +40,7 @@ from tensorflow.keras.utils import plot_model
 from tensorflow import keras
 
 # Provided
-from chesapeake_loader2 import *
+from chesapeake_loader4 import *
 from hw8_parser import *
 
 # You need to provide this yourself
@@ -128,7 +128,7 @@ def execute_exp(args=None, multi_gpus=False):
     if args.verbose >= 3:
         print('Starting data flow')
 
-    beta, alpha, _ = compute_beta_alpha(args.n_steps, args.beta_start, args.beta_end)
+    beta, alpha, _ = compute_beta_alpha2(args.n_steps, args.beta_start, args.beta_end)
 
     if not args.no_data:
         ds_train, ds_valid = create_diffusion_dataset(base_dir=args.dataset,

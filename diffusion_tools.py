@@ -10,10 +10,27 @@ def compute_beta_alpha(nsteps, beta_start, beta_end, gamma_start=0, gamma_end=0.
        
     '''
     beta = np.arange(beta_start, beta_end, (beta_end-beta_start)/nsteps)
-    gamma = np.arange(gamma_start, gamma_end, (gamma_end-gamma_start)/nsteps)
+    sigma = np.arange(gamma_start, gamma_end, (gamma_end-gamma_start)/nsteps)
     alpha = np.cumprod(1-beta)
 
-    return beta, alpha, gamma
+    return beta, alpha, sigma
+
+def compute_beta_alpha2(nsteps, beta_start, beta_end, gamma_start=0, gamma_end=0.1):
+    '''
+    Create the beta, alpha and gamma sequences.
+
+    beta follows a sine shape
+    
+    Element 0 is closest to the true image; element NSTEPS-1 is closest to the
+       completely noised image
+       
+    '''
+    t = (np.pi / 2) * (np.arange(0, 1, 1.0/nsteps)) 
+    beta = np.sin(t) * (beta_end-beta_start)+beta_start
+    sigma = np.arange(gamma_start, gamma_end, (gamma_end-gamma_start)/nsteps)
+    alpha = np.cumprod(1-beta)
+
+    return beta, alpha, sigma
 
 def convert_image(I):
     '''
@@ -45,7 +62,7 @@ class PositionEncoder(keras.layers.Layer):
         :param max_steps: the number of tokens in the sequence
         :param max_dims: the length of the vector used to encode position
                     (must match the token encoding length if "add")
-        :param dtype: The type used for encoding of position
+        :param embedding_dtype: The type used for encoding of position
         '''
         # Call superclass constructor
         super().__init__(dtype=dtype, **kwargs)
@@ -61,6 +78,9 @@ class PositionEncoder(keras.layers.Layer):
 
         # Save the state
         self.positional_embedding = tf.constant(pos_emb.astype(self.dtype))
+
+        self.max_steps = max_steps
+        self.max_dims = max_dims
         
     def call(self, indices):
         '''
@@ -75,3 +95,20 @@ class PositionEncoder(keras.layers.Layer):
 
     def embedding(self):
         return self.positional_embedding
+
+    def get_config(self):
+        config = super().get_config()
+        config.update({
+            "max_steps": self.max_steps,
+            "max_dims": self.max_dims,
+        })
+        return config
+
+    @classmethod
+    def from_config(cls, config):
+        # Seems to be about serializing sub-objects
+        return cls(**config)
+
+        #sublayer_config = config.pop("sublayer")
+        #sublayer = keras.saving.deserialize_keras_object(sublayer_config)
+        #return cls(sublayer, **config)
