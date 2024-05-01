@@ -8,6 +8,3 @@
 --padding=same
 --batch_normalization
 --lrate=0.0001
---min_delta=0.00001
---patience=20
---monitor=val_loss
