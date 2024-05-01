@@ -102,8 +102,8 @@ if __name__ == '__main__':
 
         for j in range(cols):
             for k in range(rows):
-                axs[0, j].set_xticks([])
-                axs[0, j].set_yticks([])
+                axs[k, j].set_xticks([])
+                axs[k, j].set_yticks([])
 
         for j, Z in enumerate(Zs):
             axs[j // cols + 1, j % cols].imshow(convert_image(Z[i, :, :, :]))
