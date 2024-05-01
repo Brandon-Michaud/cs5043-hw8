@@ -35,8 +35,10 @@ if __name__ == '__main__':
         tf.config.threading.set_intra_op_parallelism_threads(args.cpus_per_task)
         tf.config.threading.set_inter_op_parallelism_threads(args.cpus_per_task)
 
+    # Noise schedule
     beta, alpha, gamma = compute_beta_alpha(args.n_steps, args.beta_start, args.beta_end)
 
+    # Load dataset
     ds = create_single_dataset(base_dir=args.dataset,
                                full_sat=False,
                                partition='valid',
@@ -49,9 +51,11 @@ if __name__ == '__main__':
                                prefetch=args.prefetch,
                                num_parallel_calls=args.num_parallel_calls)
 
+    # Load model
     fname = 'results/diffusion_v6_model'
     model = keras.models.load_model(fname)
 
+    # Take one batch of images and labels
     for I, L in ds.take(1):
         print(I.shape, L.shape)
 
@@ -59,10 +63,9 @@ if __name__ == '__main__':
     TS = list(range(args.n_steps))
     stepdata = list(zip(TS, beta, alpha, gamma))
     stepdata.reverse()
-    print(TS)
+
     # Random noise
     Z = np.random.normal(loc=0, scale=1.0, size=I.shape)
-    print("SHAPE:", Z.shape)
     one = np.ones(shape=Z.shape)
     zero = np.zeros(shape=Z.shape)
     Zs = []
@@ -77,8 +80,6 @@ if __name__ == '__main__':
         # Predict the noise
         delta = model.predict(x={'image_input': Z, 'time_input': t_tensor, 'label_input': L})
 
-        print(ts, a, b)
-
         # Adjust the image
         Z = Z / np.sqrt(1 - b) - delta * b / (np.sqrt(1 - a) * np.sqrt(1 - b))
 
@@ -90,24 +91,29 @@ if __name__ == '__main__':
     # Final step
     Zs.append(Z)
 
+    # Dimensions of grid of de-noised images
     cols = 7
     rows = args.n_steps // cols + 2
 
+    # De-noise 3 images
     for i in range(3):
+        # Create grid of images
         fig, axs = plt.subplots(rows, cols)
 
+        # Show labels and corresponding true image
         cl = np.argmax(L[i, :, :, :], axis=-1)
         axs[0, 0].imshow(cl, vmax=6, vmin=0)
         axs[0, 1].imshow(I[i, :, :, :])
 
+        # Remove ticks on every subplot
         for j in range(cols):
             for k in range(rows):
                 axs[k, j].set_xticks([])
                 axs[k, j].set_yticks([])
 
+        # Show de-noising steps
         for j, Z in enumerate(Zs):
             axs[j // cols + 1, j % cols].imshow(convert_image(Z[i, :, :, :]))
-            axs[j // cols + 1, j % cols].set_xticks([])
-            axs[j // cols + 1, j % cols].set_yticks([])
 
+        # Save figure
         fig.savefig(f'figures/steps_{i}.png')

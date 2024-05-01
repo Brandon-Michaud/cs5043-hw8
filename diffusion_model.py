@@ -9,7 +9,7 @@ def create_diffusion_model(image_size,
                            n_channels,
                            n_classes,
                            n_steps,
-                           n_emebedding,
+                           n_embedding,
                            filters,
                            n_conv_per_step=3,
                            conv_activation='elu',
@@ -22,6 +22,8 @@ def create_diffusion_model(image_size,
     :param image_size: Size of input image
     :param n_channels: Number of channels in image
     :param n_classes: Number of output classes for image
+    :param n_steps: Number of noise steps
+    :param n_embedding: Number of embedding dimensions
     :param filters: Filters for each level of down Unet; array
     :param n_conv_per_step: Number of convolutions to perform in each layer of down Unet
     :param conv_activation: Activation for convolution layers
@@ -42,7 +44,7 @@ def create_diffusion_model(image_size,
     inputs = [label_input, image_input, time_input]
 
     # Use positional encoding for time step
-    time_input = PositionEncoder(max_steps=n_steps, max_dims=n_emebedding)(time_input)
+    time_input = PositionEncoder(max_steps=n_steps, max_dims=n_embedding)(time_input)
 
     # Broadcast scalar time step to match image size
     time_input = tf.expand_dims(time_input, axis=1)
@@ -72,7 +74,7 @@ def create_diffusion_model(image_size,
     # Get rid of last skip connection (unneeded)
     skips.pop()
 
-    # Add noise in middle of bottom of Unet
+    # Add time and labels in middle of bottom of Unet
     tensor = Concatenate()([tensor, time_and_label_skips.pop()])
 
     # Up convolutions in Unet
@@ -91,7 +93,7 @@ def create_diffusion_model(image_size,
         # Up sampling
         tensor = UpSampling2D(size=2)(tensor)
 
-        # Concatenate skip connection and noise
+        # Concatenate skip connection, time, and labels
         tensor = Concatenate()([tensor, skips.pop(), time_and_label_skips.pop()])
 
         # First element in next stack of convolution layers, but with more filters
