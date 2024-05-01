@@ -130,6 +130,8 @@ if __name__ == '__main__':
     for i in range(rows * cols):
         # Show de-noised image
         axs[i // cols, i % cols].imshow(convert_image(final_Z[i, :, :, :]))
+        axs[i // cols, i % cols].set_xticks([])
+        axs[i // cols, i % cols].set_yticks([])
 
     # Save figure
     fig.savefig(f'figures/gallery.png')
