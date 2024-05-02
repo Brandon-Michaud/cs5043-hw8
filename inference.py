@@ -52,7 +52,7 @@ if __name__ == '__main__':
                                num_parallel_calls=args.num_parallel_calls)
 
     # Load model
-    fname = 'results/diffusion_v6_model'
+    fname = 'results/diffusion_v7_model'
     model = keras.models.load_model(fname)
 
     # Take one batch of images and labels
@@ -116,24 +116,35 @@ if __name__ == '__main__':
             axs[j // cols + 1, j % cols].imshow(convert_image(Z[i, :, :, :]))
 
         # Save figure
-        fig.savefig(f'figures/steps_{i}.png')
+        fig.savefig(f'figures/v7_steps_{i}.png')
 
     # Create gallery of de-noised of images
-    rows = 5
-    cols = 5
+    rows = 25
+    cols = 3
     fig, axs = plt.subplots(rows, cols)
 
     # Get only de-noised images
     final_Z = Zs[len(Zs) - 1]
 
+    # Remove ticks on every subplot
+    for i in range(rows):
+        for j in range(cols):
+            axs[i, j].set_xticks([])
+            axs[i, j].set_yticks([])
+
     # Show gallery of final images
     for i in range(rows * cols):
+        # Show label
+        cl = np.argmax(L[i, :, :, :], axis=-1)
+        axs[i, 0].imshow(cl, vmax=6, vmin=0)
+
+        # Show real image
+        axs[i, 1].imshow(I[i, :, :, :])
+
         # Show de-noised image
-        axs[i // cols, i % cols].imshow(convert_image(final_Z[i, :, :, :]))
-        axs[i // cols, i % cols].set_xticks([])
-        axs[i // cols, i % cols].set_yticks([])
+        axs[i, 2].imshow(convert_image(final_Z[i, :, :, :]))
 
     # Save figure
-    fig.savefig(f'figures/gallery.png')
+    fig.savefig(f'figures/v7_gallery.png')
 
 
