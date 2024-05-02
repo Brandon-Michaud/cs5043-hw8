@@ -52,7 +52,7 @@ if __name__ == '__main__':
                                num_parallel_calls=args.num_parallel_calls)
 
     # Load model
-    fname = 'results/diffusion_v7_model'
+    fname = 'results/diffusion_v6_model'
     model = keras.models.load_model(fname)
 
     # Take one batch of images and labels
@@ -116,12 +116,12 @@ if __name__ == '__main__':
             axs[j // cols + 1, j % cols].imshow(convert_image(Z[i, :, :, :]))
 
         # Save figure
-        fig.savefig(f'figures/v7_steps_{i}.png')
+        fig.savefig(f'figures/v6_steps_{i}.png')
 
     # Create gallery of de-noised of images
     rows = 25
     cols = 3
-    fig, axs = plt.subplots(rows, cols)
+    fig, axs = plt.subplots(rows, cols, figsize=(16, 300))
 
     # Get only de-noised images
     final_Z = Zs[len(Zs) - 1]
@@ -145,6 +145,6 @@ if __name__ == '__main__':
         axs[i, 2].imshow(convert_image(final_Z[i, :, :, :]))
 
     # Save figure
-    fig.savefig(f'figures/v7_gallery.png')
+    fig.savefig(f'figures/v6_gallery.png')
 
 
