@@ -133,7 +133,7 @@ if __name__ == '__main__':
             axs[i, j].set_yticks([])
 
     # Show gallery of final images
-    for i in range(rows * cols):
+    for i in range(rows):
         # Show label
         cl = np.argmax(L[i, :, :, :], axis=-1)
         axs[i, 0].imshow(cl, vmax=6, vmin=0)
